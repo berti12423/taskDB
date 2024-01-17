@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -33,6 +34,7 @@ public class EditTaskScreen extends AppCompatActivity implements View.OnClickLis
     TextView selectedDateTextView;
     Calendar selectedDateTime;
     Intent intent;
+    RadioGroup radioGroup;
     int i;
     String recurrence;
     String  priority;
@@ -51,7 +53,7 @@ public class EditTaskScreen extends AppCompatActivity implements View.OnClickLis
         selectedDateTextView = findViewById(R.id.tvSelectedDateTime);
         btnUpdate.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
-
+        radioGroup = findViewById(R.id.rgRecurre);
         i = intent.getIntExtra("pos", 0);
         taskNameEditText = findViewById(R.id.taskNameEditText);
     }
@@ -98,9 +100,10 @@ public class EditTaskScreen extends AppCompatActivity implements View.OnClickLis
             {
                 u.getTasklist().get(i).setTaskName(taskName);
             }
-            if(priority!=null)
+
+            if(recurrence!=null)
             {
-                u.getTasklist().get(i).setPriority(priority);
+                u.getTasklist().get(i).setPriority(recurrence);
             }
             if (!selectedDateTextView.getText().toString().isEmpty())
             {
@@ -109,6 +112,10 @@ public class EditTaskScreen extends AppCompatActivity implements View.OnClickLis
             }
             if (recyclerView != null && recyclerView.getAdapter() != null) {
                 recyclerView.getAdapter().notifyDataSetChanged();
+            }
+            if (priority!=null)
+            {
+                u.getTasklist().get(i).setPriority(priority);
             }
 
             Intent taskUpdatedIntent = new Intent(TASK_UPDATED_ACTION);

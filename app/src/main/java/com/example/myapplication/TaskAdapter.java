@@ -74,9 +74,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Notify the listener about the button click
-                if (buttonClickListener != null) {
-                    buttonClickListener.onButtonClick(position);
+                int clickedPosition = holder.getAdapterPosition();
+                if (clickedPosition != RecyclerView.NO_POSITION) {
+                    if (buttonClickListener != null) {
+                        buttonClickListener.onButtonClick(holder.getAdapterPosition());
+                    }
                 }
             }
         });
