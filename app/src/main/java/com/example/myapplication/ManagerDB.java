@@ -71,6 +71,19 @@ public class ManagerDB {
     public static void addTasktoDB(User u2,Task task)
     {
 
+        int i;
+        for (i=0 ; i<userList.size(); i++)
+        {
+            if (userList.get(i).getEmail().equals(u2.getEmail()))
+                break;
+        }
+        if (userList.get(i).tasklist == null)
+        {
+            userList.get(i).tasklist = new ArrayList<>();
+        }
+        userList.get(i).tasklist.add(task);
+
+        ref.child("data").setValue(userList);
 
 
     }

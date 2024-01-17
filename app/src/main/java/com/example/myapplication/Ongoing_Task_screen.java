@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.EditTaskScreen.TASK_UPDATED_ACTION;
 import static com.example.myapplication.MainActivity.u;
 
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -7,7 +8,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +25,7 @@ public class Ongoing_Task_screen extends AppCompatActivity implements View.OnCli
     // Pass in intent the task list!!!!
     Intent intent,intent2,intent3;
     Button btnBack, editBTN;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +37,11 @@ public class Ongoing_Task_screen extends AppCompatActivity implements View.OnCli
         intent2 = new  Intent(this, MainScreen.class);
         intent3 = new Intent(this,EditTaskScreen.class);
         btnBack = findViewById(R.id.btnBack);
-
+        IntentFilter filter = new IntentFilter(TASK_UPDATED_ACTION);
+        registerReceiver(taskUpdatedReceiver, filter);
         btnBack.setOnClickListener(this);
         // Lookup the recyclerview in activity layout
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
 
         if (recyclerView == null) {
             Log.e("Ongoing_Task_screen", "RecyclerView is null");
@@ -56,6 +63,28 @@ public class Ongoing_Task_screen extends AppCompatActivity implements View.OnCli
         } else {
             Log.e("Ongoing_Task_screen", "TaskList is null");
             // Log an error or handle the case where taskList is null
+        }
+    }
+
+    private BroadcastReceiver taskUpdatedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Refresh the list or perform any necessary actions when a task is updated
+            refreshTaskList();
+        }
+    };
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(taskUpdatedReceiver);
+    }
+    private void refreshTaskList() {
+        // Retrieve the updated task list and refresh the adapter
+        ArrayList<Task> updatedTaskList = u.getTasklist();
+        if (updatedTaskList != null && recyclerView != null && recyclerView.getAdapter() != null) {
+            TaskAdapter adapter = (TaskAdapter) recyclerView.getAdapter();
+            adapter.setmTasks(updatedTaskList);
+            adapter.notifyDataSetChanged();
         }
     }
     @Override

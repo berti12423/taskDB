@@ -19,8 +19,18 @@ import java.util.Locale;
 // Note that we specify the custom ViewHolder which gives us access to our views
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    // Store a member variable for the tasks
+
     private List<Task> mTasks;
+    public List<Task> getmTasks() {
+        return mTasks;
+    }
+
+    public void setmTasks(List<Task> mTasks) {
+        this.mTasks = mTasks;
+    }
+
+    // Store a member variable for the tasks
+
 
 
     // Pass in the task array into the constructor

@@ -145,7 +145,7 @@ public class New_Task_Screen extends AppCompatActivity implements View.OnClickLi
         String formattedDateTime = dateTimeFormat.format(selectedDateTime.getTime());
         Task task = new Task(taskName, recurrence,priority,formattedDateTime);
 
-        intent.putExtra("taskObject", task);  // Use "taskObject" instead of "TASK_OBJECT"
+        intent.putExtra("taskObject", task);
 
         addTasktoDB(u,task);
 
